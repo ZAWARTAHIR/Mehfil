@@ -17,6 +17,9 @@ import OrderSummary from './pages/OrderSummary'
 import PaymentSummary from './pages/PaymentSummary'
 import TicketPage from './pages/TicketPage'
 import CreatEvent from './pages/CreateEvent'
+import WanttoAdd from './pages/WanttoAdd'
+import Blog from './pages/blog'
+import BlogPostDetail from './pages/BlogPostDetail'
 
 axios.defaults.baseURL = 'http://localhost:4000/';
 axios.defaults.withCredentials=true;
@@ -33,7 +36,10 @@ function App() {
         <Route path='/event/:id' element= {<EventPage/>} />
         <Route path='/calendar' element={<CalendarView />} />
         <Route path='/wallet' element={<TicketPage />}/>
+        <Route path='/want-to-add' element={<WanttoAdd />}/>
         <Route path='/event/:id/ordersummary' element = {<OrderSummary />} />
+        <Route path='/blog' element={<Blog />} />
+        <Route path='/blog/:id' element={<BlogPostDetail />} />
       </Route>
 
       <Route path='/register' element={<RegisterPage />}/>

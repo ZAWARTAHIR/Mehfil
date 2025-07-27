@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import axios from 'axios'
 import { UserContext } from '../UserContext'
+import { GoogleLogin } from '@react-oauth/google';
 
 
 export default function LoginPage() {
@@ -132,6 +133,41 @@ export default function LoginPage() {
             </Link>
 
         </form>
+
+        <div className="my-6 w-full max-w-xs mx-auto">
+          <GoogleLogin
+            onSuccess={credentialResponse => {
+              // Decode JWT to get user info
+              const decodeJwt = (token) => {
+                try {
+                  const base64Url = token.split('.')[1];
+                  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                  }).join(''));
+                  return JSON.parse(jsonPayload);
+                } catch (e) {
+                  return null;
+                }
+              };
+              const profile = decodeJwt(credentialResponse.credential);
+              // Use name if available, otherwise fallback to email
+              const googleUser = {
+                name: profile?.name || profile?.email || 'Google User',
+                email: profile?.email || '',
+                token: credentialResponse.credential,
+                isGoogle: true
+              };
+              setUser(googleUser);
+              localStorage.setItem('googleUser', JSON.stringify(googleUser));
+              setRedirect('/');
+            }}
+            onError={() => {
+              alert('Google Login Failed');
+            }}
+            width="100%"
+          />
+        </div>
 
     </div>
    

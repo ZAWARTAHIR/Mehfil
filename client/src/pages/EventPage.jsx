@@ -51,7 +51,7 @@ if (!event) return '';
         )}
       </div>
 
-      <img src="../src/assets/paduru.png" alt="" className='rounded object-fill aspect-16:9'/> 
+      {/* <img src="" alt="" className='rounded object-fill aspect-16:9'/>  */}
       {/* FIXME: This is a demo image after completing the create event function delete this */}
 
       <div className="flex justify-between mt-8 mx-2">
@@ -61,7 +61,7 @@ if (!event) return '';
           </Link>
       </div>
       <div className="mx-2">
-          <h2 className="text-md md:text-xl font-bold mt-3 text-primarydark">{event.ticketPrice === 0? 'Free' : 'LKR. '+ event.ticketPrice}</h2>
+          <h2 className="text-md md:text-xl font-bold mt-3 text-primarydark">{event.ticketPrice === 0? 'Free' : 'PKR. '+ event.ticketPrice}</h2>
       </div>
       <div className="mx-2 mt-5 text-md md:text-lg truncate-3-lines">
         {event.description}

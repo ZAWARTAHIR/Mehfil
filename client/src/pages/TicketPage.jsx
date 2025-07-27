@@ -7,17 +7,18 @@ import { UserContext } from "../UserContext";
 
 export default function TicketPage() {
     const {user} = useContext(UserContext);
-  
     const [userTickets, setUserTickets] = useState([]);
-  
+
     useEffect(() => {
       if (user) {
-        fetchTickets()
+        fetchTickets();
       }
-    }, );
-  
+    }, [user]);
+
     const fetchTickets = async()=>{
-      axios.get(`/tickets/user/${user._id}`)
+      const userId = user?._id || user?.email;
+      if (!userId) return;
+      axios.get(`/tickets/user/${userId}`)
           .then(response => {
             setUserTickets(response.data);
           })
@@ -25,18 +26,17 @@ export default function TicketPage() {
             console.error('Error fetching user tickets:', error);
           })
     }
-  
+
     const deleteTicket = async(ticketId) => {
       try {
         await axios.delete(`/tickets/${ticketId}`); 
-        
         fetchTickets();
         alert('Ticket Deleted');
       } catch (error) {
         console.error('Error deleting ticket:', error);
       }
     }
-  
+
     return (
       <div className="flex flex-col flex-grow">
       <div className="mb-5 flex justify-between place-items-center">
@@ -83,7 +83,7 @@ export default function TicketPage() {
             
             <div className="h-48 mt-2 gap-2 p-5 bg-gray-100 font-bold rounded-md relative">
               <button onClick={()=>deleteTicket(ticket._id)} className="absolute cursor-pointer right-0 mr-2">
-                <RiDeleteBinLine className=" h-6 w-10 text-red-700 "/>
+                {/* <RiDeleteBinLine className=" h-6 w-10 text-red-700 "/> */}
               </button>
               <div className="flex justify-start place-items-center text-sm md:text-base font-normal">
                 

@@ -25,7 +25,13 @@ app.use(
    })
 );
 
-mongoose.connect(process.env.MONGO_URL);
+mongoose.connect('mongodb://127.0.0.1:27017/EventoEMS', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("✅ Connected to MongoDB"))
+.catch((err) => console.error("❌ MongoDB connection error:", err));
+
 
 const storage = multer.diskStorage({
    destination: (req, file, cb) => {
@@ -92,7 +98,11 @@ app.get("/profile", (req, res) => {
    if (token) {
       jwt.verify(token, jwtSecret, {}, async (err, userData) => {
          if (err) throw err;
-         const { name, email, _id } = await UserModel.findById(userData.id);
+         const user = await UserModel.findById(userData.id);
+         if (!user) {
+           return res.status(404).json({ error: 'User not found' });
+         }
+         const { name, email, _id } = user;
          res.json({ name, email, _id });
       });
    } else {

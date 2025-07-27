@@ -42,24 +42,42 @@ export default function Header() {
   }, []); 
   
   //! Logout Function --------------------------------------------------------
+  const [redirectLogout, setRedirectLogout] = useState(false);
   async function logout(){
     await axios.post('/logout');
     setUser(null);
+    setRedirectLogout(true);
   }
 //! Search input ----------------------------------------------------------------
   const handleSearchInputChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
+  if (redirectLogout) {
+    window.location.href = '/';
+    return null;
+  }
   return (
-    <div>
-      <header className='flex py-2 px-6 sm:px-6 justify-between place-items-center'>
-          
-          <Link to={'/'} className="flex item-center ">
-            <img src="../src/assets/logo.png" alt="" className='w-26 h-9'/>
+    <header className='w-full sticky top-0 left-0 right-0 z-[999] bg-white shadow-md'>
+      <div className="flex items-center justify-between py-2 px-4 sm:px-6">
+        {/* Logo: leftmost on all screens */}
+        <div className="flex-1 flex justify-start">
+          <Link to={'/'} className="flex items-center">
+            <img src="../src/assets/Mehfil-unscreen.gif" alt="Logo" className="h-12 sm:h-9 w-auto object-contain" />
           </Link>
-          <div  className='flex bg-white rounded py-2.5 px-4 w-1/3 gap-4 items-center shadow-md shadow-gray-200'>
-            
+        </div>
+        {/* Hamburger for mobile */}
+        <div className="flex sm:hidden">
+          <button onClick={() => setisMenuOpen(isMenuOpen === 'mobile' ? false : 'mobile')} className="ml-2 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+        {/* Desktop nav/search/actions */}
+        <div className="hidden sm:flex items-center gap-4">
+          {/* Desktop search bar */}
+          <div className="bg-white rounded py-2.5 px-4 w-80 gap-4 items-center shadow-md shadow-gray-200 flex">
             <button>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
@@ -68,145 +86,138 @@ export default function Header() {
             <div ref={searchInputRef}>
               <input type="text" placeholder="Search" value={searchQuery} onChange={handleSearchInputChange} className='text-sm text-black outline-none w-full '/>
             </div>
-            {/* <div className='text-sm text-gray-300 font-semibold'>Search</div> */}      
-          </div> 
-
-          {/*------------------------- Search Functionality -------------------  */}
-          {searchQuery && (
-          <div className="p-2 w-144 z-10 absolute rounded left-[28.5%] top-14 md:w-[315px] md:left-[17%] md:top-16 lg:w-[540px] lg:left-[12%] lg:top-16 bg-white">
-            {/* Filter events based on the search query */}
-            {events
-              .filter((event) =>
-                event.title.toLowerCase().includes(searchQuery.toLowerCase())
-              )
-              .map((event) => (
-                <div key={event._id} className="p-2">
-                  {/* Display event details */}
-                  <Link to={"/event/" + event._id}>
-                      <div className="text-black text-lg w-full">{event.title}</div>
-                  </Link>
-                </div>
-              ))}
           </div>
-          )}
-    
-          
-          <Link to={'/createEvent'}> {/*TODO:Route create event page after creating it */}
-            <div className='hidden md:flex flex-col place-items-center py-1 px-2 rounded text-primary cursor-pointer hover:text-primarydark hover:bg-white hover:shadow-sm shadow-gray-200 hover:transition-shadow duration-1500'>
-              <button>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 stroke-3 py-1">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-              </button>
-              <div className='font-bold color-primary text-sm'>Create Event</div>
-            </div>  
-          </Link>
-
-          <div className='hidden lg:flex gap-5 text-sm'>
-          <Link to={'/wallet'}> {/*TODO:Route wallet page after creating it */}
-            <div className='flex flex-col place-items-center py-1 px-3 rounded cursor-pointer hover:text-primarydark hover:bg-white hover:shadow-sm shadow-gray-200 hover:transition-shadow duration-1500'>
+          {/* Desktop nav/actions */}
+          <div className='flex gap-3 text-sm'>
+            <Link to={'/want-to-add'}>
+              <div className='flex flex-col place-items-center py-1 px-2 rounded text-primary cursor-pointer hover:text-primarydark hover:bg-white hover:shadow-sm shadow-gray-200 hover:transition-shadow duration-1500'>
+                <button>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 stroke-3 py-1">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                </button>
+                <div className='font-bold color-primary text-sm'>Add Event</div>
+              </div>
+            </Link>
+            <Link to={'/wallet'}>
+              <div className='flex flex-col place-items-center py-1 px-3 rounded cursor-pointer hover:text-primarydark hover:bg-white hover:shadow-sm shadow-gray-200 hover:transition-shadow duration-1500'>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 py-1">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" />
                 </svg>
                 <div>Wallet</div>
-            </div >
+              </div>
             </Link>
-
-            <Link to={'/verification'}> {/*TODO:Route verification center page after creating it */}
-            <div className='flex flex-col place-items-center py-1 px-3 rounded cursor-pointer hover:text-primarydark hover:bg-white hover:shadow-sm shadow-gray-200 hover:transition-shadow duration-1500'>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 py-1">
-                <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 01-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 01-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 01-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584zM12 18a.75.75 0 100-1.5.75.75 0 000 1.5z" clipRule="evenodd" />
-              </svg>
-              <div>Center</div>
-            </div>
+            <Link to={'/calendar'}>
+              <div className='flex flex-col place-items-center py-1 px-3 rounded cursor-pointer hover:text-primarydark hover:bg-white hover:shadow-sm shadow-gray-200 hover:transition-shadow duration-1500'>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 py-1">
+                  <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+                  <path fillRule="evenodd" d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z" clipRule="evenodd" />
+                </svg>
+                <div>Calendar</div>
+              </div>
             </Link>
-
-            <Link to={'/calendar'}> {/*TODO:Route calendar page after creating it */}
-            <div className='flex flex-col place-items-center py-1 px-3 rounded cursor-pointer hover:text-primarydark hover:bg-white hover:shadow-sm shadow-gray-200 hover:transition-shadow duration-1500'>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 py-1">
-                <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
-                <path fillRule="evenodd" d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z" clipRule="evenodd" />
-              </svg>
-              <div>Calendar</div>
-            </div>
-            </Link>
-          </div>
-          
-
-          <div>
-            <div className='flex flex-col place-items-center py-1 px-3 rounded cursor-pointer hover:text-primarydark hover:bg-white hover:shadow-sm shadow-gray-200 hover:transition-shadow duration-1500'>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 py-1">
-                <path fillRule="evenodd" d="M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0 24.585 24.585 0 01-4.831-1.244.75.75 0 01-.298-1.205A8.217 8.217 0 005.25 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0 25.057 25.057 0 01-4.496 0z" clipRule="evenodd" />
-              </svg>
-          
-            </div>
-          </div>
-
-        {/* -------------------IF user is Logged DO this Main-------------------- */}
-        {!!user &&(
-          
-          <div className="flex flex-row items-center gap-2 sm:gap-8 ">
-            <div className="flex items-center gap-2">
-              <Link to={'/useraccount'}>  {/*TODO: Route user profile page after creating it -> 1.50*/} 
-                {user.name.toUpperCase()}
-              </Link>
-              
-              <BsFillCaretDownFill className="h-5 w-5 cursor-pointer hover:rotate-180 transition-all" onClick={() => setisMenuOpen(!isMenuOpen)}/>
-            </div>
-            <div className="hidden md:flex">
-              <button onClick={logout} className="secondary">
-                <div>Log out</div>
-                <RxExit/>
-              </button>
-            </div>
-          </div>  
-        )}
-
-        {/* -------------------IF user is not Logged in DO this MAIN AND MOBILE-------------------- */}
-        {!user &&(
-          <div>
-            
-            <Link to={'/login'} className=" ">
-              <button className="primary">
-                <div>Sign in </div>
-              </button>
+            {/* Blog link */}
+            <Link to={'/blog'}>
+              <div className='flex flex-col place-items-center py-1 px-3 rounded cursor-pointer hover:text-primarydark hover:bg-white hover:shadow-sm shadow-gray-200 hover:transition-shadow duration-1500'>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 py-1">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 20.25c4.556 0 8.25-1.567 8.25-3.5v-2.25c0-1.933-3.694-3.5-8.25-3.5s-8.25 1.567-8.25 3.5v2.25c0 1.933 3.694 3.5 8.25 3.5z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 12.75c4.556 0 8.25-1.567 8.25-3.5s-3.694-3.5-8.25-3.5-8.25 1.567-8.25 3.5 3.694 3.5 8.25 3.5z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 5.25c4.556 0 8.25-1.567 8.25-3.5S16.556.25 12 .25 3.75 1.817 3.75 3.75 7.444 5.25 12 5.25z" />
+                </svg>
+                <div>Blog</div>
+              </div>
             </Link>
           </div>
-        )}
-          
-          {/* -------------------IF user is Logged DO this Mobile -------------------- */}
-          {!!user &&(
-            //w-auto flex flex-col absolute bg-white pl-2 pr-6 py-5 gap-4 rounded-xl
-            <div className="absolute z-10 mt-64 flex flex-col w-48 bg-white right-2 md:right-[160px] rounded-lg shadow-lg"> 
-            {/* TODO: */}
-              <nav className={`block ${isMenuOpen ? 'block' : 'hidden'} `}>
-                <div className="flex flex-col font-semibold text-[16px]">
-                <Link className="flex hover:bg-background hover:shadow py-2 pt-3 pl-6 pr-8 rounded-lg" to={'/createEvent'} >
-                  Create Event
+          {/* User/account actions for desktop */}
+          {!!user && (
+            <div className="flex flex-row items-center gap-2 sm:gap-8 relative">
+              <div className="flex items-center gap-2">
+                <Link to={'/useraccount'}>
+                  {user.name.toUpperCase()}
                 </Link>
-                
-                <Link className="flex hover:bg-background hover:shadow py-2 pl-6 pr-8 rounded-lg" to={'/wallet'}>
-                  <div>Wallet</div>
-                </Link>
-                
-                <Link className="flex hover:bg-background hover:shadow py-2 pl-6 pr-8 rounded-lg" to={'/verification'}>
-                  <div>Center</div>
-                </Link>
-
-                <Link className="flex hover:bg-background hover:shadow py-2 pl-6 pr-8 rounded-lg" to={'/calendar'}>
-                  <div>Calendar</div>
-                </Link>
-
-                <Link className="flex hover:bg-background hover:shadow py-2 pl-6 pb-3 pr-8 rounded-lg" onClick={logout}>
-                  Log out
-                </Link>
+                <BsFillCaretDownFill className="h-5 w-5 cursor-pointer hover:rotate-180 transition-all" onClick={() => setisMenuOpen(isMenuOpen === 'user' ? false : 'user')} />
+              </div>
+              <div className="hidden md:flex">
+                <button onClick={logout} className="secondary">
+                  <div>Log out</div>
+                  <RxExit/>
+                </button>
+              </div>
+              {/* User dropdown menu (desktop) */}
+              {isMenuOpen === 'user' && (
+                <div className="absolute right-0 top-12 bg-white rounded-lg shadow-lg py-2 px-4 flex flex-col gap-2 min-w-[160px] z-[1000] animate-slide-down">
+                  <Link to="/useraccount" className="hover:text-primary py-1" onClick={() => setisMenuOpen(false)}>Account</Link>
+                  <Link to="/wallet" className="hover:text-primary py-1" onClick={() => setisMenuOpen(false)}>Wallet</Link>
+                  <Link to="/calendar" className="hover:text-primary py-1" onClick={() => setisMenuOpen(false)}>Calendar</Link>
+                  <Link to="/blog" className="hover:text-primary py-1" onClick={() => setisMenuOpen(false)}>Blog</Link>
+                  <button onClick={logout} className="text-left hover:text-primary py-1">Log out</button>
                 </div>
-              </nav>
+              )}
             </div>
-        )}
+          )}
+          {!user && (
+            <div>
+              <Link to={'/login'} className=" ">
+                <button className="primary">
+                  <div>Sign in </div>
+                </button>
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+      {/* Mobile dropdown menu */}
+      {isMenuOpen === 'mobile' && (
+        <div className="sm:hidden fixed left-0 right-0 top-[64px] z-[9999] bg-black bg-opacity-60 flex flex-col" style={{height: 'calc(100vh - 64px)'}}>
+          <div className="bg-white w-full py-6 px-6 rounded-b-2xl shadow-xl flex flex-col gap-6 animate-slide-down">
+            {/* Search bar */}
+            <div className="flex bg-gray-100 rounded py-2.5 px-4 gap-4 items-center shadow-md shadow-gray-200">
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchQuery}
+                onChange={handleSearchInputChange}
+                className="text-sm text-black outline-none w-full"
+                autoFocus
+              />
+              <button onClick={() => setisMenuOpen(false)} className="ml-2 text-gray-500">✕</button>
+            </div>
+            {/* Nav links */}
+            <nav className="flex flex-col gap-4 text-lg font-semibold">
+              <Link to="/want-to-add" onClick={() => setisMenuOpen(false)} className="hover:text-primary transition-colors">Add Event</Link>
+              <Link to="/wallet" onClick={() => setisMenuOpen(false)} className="hover:text-primary transition-colors">Wallet</Link>
+              <Link to="/calendar" onClick={() => setisMenuOpen(false)} className="hover:text-primary transition-colors">Calendar</Link>
+              <Link to="/blog" onClick={() => setisMenuOpen(false)} className="hover:text-primary transition-colors">Blog</Link>
+              {!!user ? (
+                <>
+                  <Link to="/useraccount" onClick={() => setisMenuOpen(false)} className="hover:text-primary transition-colors">{user.name.toUpperCase()}</Link>
+                  <button onClick={logout} className="text-left hover:text-primary transition-colors">Log out</button>
+                </>
+              ) : (
+                <Link to="/login" onClick={() => setisMenuOpen(false)} className="hover:text-primary transition-colors">Sign in</Link>
+              )}
+            </nav>
+          </div>
+        </div>
+      )}
+
+      {/*------------------------- Search Functionality -------------------  */}
+      {searchQuery && Array.isArray(events) && events.length > 0 && (
+        <div className="p-2 w-144 z-10 absolute rounded left-[28.5%] top-14 md:w-[315px] md:left-[17%] md:top-16 lg:w-[540px] lg:left-[12%] lg:top-16 bg-white">
+          {/* Filter events based on the search query */}
+          {events
+            .filter((event) => event && event.title && event.title.toLowerCase().includes(searchQuery.toLowerCase()))
+            .map((event) => (
+              <div key={event._id} className="p-2">
+                {/* Display event details */}
+                <Link to={"/event/" + event._id}>
+                  <div className="text-black text-lg w-full">{event.title}</div>
+                </Link>
+              </div>
+            ))}
+        </div>
+      )}
 
         </header>
-          
-    </div>
-  )
+  );
 }
