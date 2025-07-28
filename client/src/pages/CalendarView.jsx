@@ -14,7 +14,7 @@ export default function CalendarView() {
   
 //! Fetch events from the server -------------------------------------------------------
   useEffect(() => {
-    axios.get("/events").then((response) => {
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/event`).then((response) => {
       setEvents(response.data);
     }).catch((error) => {
       console.error("Error fetching events:", error);

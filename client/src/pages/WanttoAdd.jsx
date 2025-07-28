@@ -30,7 +30,7 @@ const WanttoAdd = () => {
       return;
     }
     // Submit to backend
-    axios.post('createEvent', form)
+    axios.post(`${import.meta.env.VITE_BACKEND_URL}createEvent`, form)
       .then(() => {
         setShowSuccess(true);
         setForm({

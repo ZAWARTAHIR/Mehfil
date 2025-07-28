@@ -18,7 +18,7 @@ export default function TicketPage() {
     const fetchTickets = async()=>{
       const userId = user?._id || user?.email;
       if (!userId) return;
-      axios.get(`/tickets/user/${userId}`)
+      axios.get(`${import.meta.env.VITE_BACKEND_URL}/tickets/user/${userId}`)
           .then(response => {
             setUserTickets(response.data);
           })
@@ -29,7 +29,7 @@ export default function TicketPage() {
 
     const deleteTicket = async(ticketId) => {
       try {
-        await axios.delete(`/tickets/${ticketId}`); 
+        await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/tickets/${ticketId}`); 
         fetchTickets();
         alert('Ticket Deleted');
       } catch (error) {

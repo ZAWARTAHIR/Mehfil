@@ -54,7 +54,7 @@ export default function AddEvent() {
     setShowError(false);
     // Check if more than 3 events exist for the selected date
     try {
-      const res = await axios.get('/createEvent');
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/createEvent`);
       // Compare only the date part (ignore time)
       const selectedDate = formData.eventDate;
       const eventsOnDate = res.data.filter(ev => {
@@ -71,7 +71,7 @@ export default function AddEvent() {
       return;
     }
     axios
-      .post("/createEvent", formData)
+      .post(`${import.meta.env.VITE_BACKEND_URL}/createEvent`, formData)
       .then((response) => {
         window.alert("🎉 Event added successfully!");
         window.location.reload();

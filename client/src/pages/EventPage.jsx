@@ -15,7 +15,7 @@ export default function EventPage() {
     if(!id){
       return;
     }
-    axios.get(`/event/${id}`).then(response => {
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/event/${id}`).then(response => {
       setEvent(response.data)
     }).catch((error) => {
       console.error("Error fetching events:", error);

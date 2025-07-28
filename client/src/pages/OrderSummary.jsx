@@ -12,7 +12,7 @@ export default function OrderSummary() {
       if(!id){
         return;
       }
-      axios.get(`/event/${id}/ordersummary`).then(response => {
+      axios.get(`${import.meta.env.VITE_BACKEND_URL}/event/${id}/ordersummary`).then(response => {
         setEvent(response.data)
       }).catch((error) => {
         console.error("Error fetching events:", error);

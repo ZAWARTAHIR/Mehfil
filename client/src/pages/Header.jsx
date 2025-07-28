@@ -16,7 +16,7 @@ export default function Header() {
   //! Fetch events from the server -------------------------------------------------
   useEffect(() => {
     
-    axios.get("/events").then((response) => {
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/event`).then((response) => {
       setEvents(response.data);
     }).catch((error) => {
       console.error("Error fetching events:", error);
@@ -44,7 +44,7 @@ export default function Header() {
   //! Logout Function --------------------------------------------------------
   const [redirectLogout, setRedirectLogout] = useState(false);
   async function logout(){
-    await axios.post('/logout');
+    await axios.post(`${import.meta.env.VITE_BACKEND_URL}/logout`);
     setUser(null);
     setRedirectLogout(true);
   }

@@ -5,10 +5,10 @@ import { useEffect, useState, useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from '../UserContext';
 import { BsArrowRightShort } from "react-icons/bs";
-import { BiLike } from "react-icons/bi";
+import { BiLike } from "react-icons/bi"; 
 import ucpImg from '../assets/ucp1234.jpg';
 import shalomImg from '../assets/shalom.png';
-import paduruImg from '../assets/paduru.png';
+import paduruImg from '../assets/grand.jpg';
 
 
 // Team Section with custom scroll animation
@@ -65,6 +65,17 @@ function TeamSection() {
           <h3 className="text-xl font-bold text-green-700 mb-2">Usman Kashif</h3>
           <p className="text-gray-600 text-center">Frontend Specialist. Expert in React and UI/UX, ensuring a beautiful and user-friendly experience.</p>
         </div>
+        <div
+          ref={el => (teamRefs.current[0] = el)}
+          className={`bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center hover:shadow-2xl border-t-4 border-pink-500 w-full sm:w-auto transition-all duration-700
+            ${visible[0] ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 -translate-x-16 scale-90'}
+          `}
+          style={{}}
+        >
+          <img src="../src//assets/ahsin.jpg" alt="Hafiz Ahsin" className="w-40 h-40 object-cover border-4 border-pink-300 mb-4 shadow" style={{clipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)', WebkitClipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)'}} />
+          <h3 className="text-xl font-bold text-pink-700 mb-2">Hafiz Ahsin Ali</h3>
+          <p className="text-gray-600 text-center">Backend Specialist. Expert in Node.js and MongoDB, ensuring fast, secure, and scalable server-side performance.</p>
+        </div>
       </div>
     </div>
   );
@@ -88,7 +99,7 @@ function TeamSection() {
     useEffect(() => {
       
       axios
-        .get("/createEvent")
+        .get(`${import.meta.env.VITE_BACKEND_URL}/createEvent`)
         .then((response) => {
           setEvents(response.data);
         })
@@ -100,7 +111,7 @@ function TeamSection() {
   //! Like Functionality --------------------------------------------------------------
     const handleLike = (eventId) => {
       axios
-        .post(`/event/${eventId}`)
+        .post(`${import.meta.env.VITE_BACKEND_URL}/event/${eventId}`)
         .then((response) => {
             setEvents((prevEvents) =>
             prevEvents.map((event) =>

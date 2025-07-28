@@ -47,7 +47,7 @@ export default function PaymentSummary() {
       if(!id){
         return;
       }
-      axios.get(`/event/${id}/ordersummary/paymentsummary`).then(response => {
+      axios.get(`${import.meta.env.VITE_BACKEND_URL}/event/${id}/ordersummary/paymentsummary`).then(response => {
         setEvent(response.data)
 
         setTicketDetails(prevTicketDetails => ({
@@ -123,7 +123,7 @@ export default function PaymentSummary() {
             qr: qrCode,
           }
         };
-        const response = await axios.post(`/tickets`, updatedTicketDetails);
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/tickets`, updatedTicketDetails);
         alert("Ticket Created");
         setRedirect(true)
         console.log('Success creating ticket', updatedTicketDetails)
@@ -200,6 +200,29 @@ if (redirect){
           {/* Your Details */}
           <div className="mt-8 space-y-4">
             <h2 className="text-xl font-bold mb-4">Your Details</h2>
+            {/* Gender Selection */}
+            <div className="flex items-center ml-10 gap-8 mb-2">
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="male"
+                  checked={details.gender === 'male'}
+                  onChange={e => setDetails(prev => ({ ...prev, gender: e.target.value }))}
+                />
+                Male
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="female"
+                  checked={details.gender === 'female'}
+                  onChange={e => setDetails(prev => ({ ...prev, gender: e.target.value }))}
+                />
+                Female
+              </label>
+            </div>
             {showFieldError && (
               <div className="mb-2 p-3 bg-red-100 border-l-4 border-red-500 text-red-800 rounded flex items-center gap-2 shadow animate-pulse">
                 <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>

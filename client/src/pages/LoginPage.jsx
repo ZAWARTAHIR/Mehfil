@@ -29,7 +29,7 @@ export default function LoginPage() {
       ev.preventDefault();
 
       try{
-        const {data} = await axios.post('/login', {email, password})
+        const {data} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/login`, {email, password})
         setUser(data);
         alert('Login success');
 
