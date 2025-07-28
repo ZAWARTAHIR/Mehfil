@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 import { UserContext } from '../UserContext';
 import { BsArrowRightShort } from "react-icons/bs";
 import { BiLike } from "react-icons/bi"; 
-import ucpImg from '../assets/ucp1234.jpg';
-import shalomImg from '../assets/shalom.png';
-import paduruImg from '../assets/grand.jpg';
+import ucpImg from '/ucp1234.jpg';
+import shalomImg from '/shalom.png';
+import paduruImg from '/grand.jpg';
 
 
 // Team Section with custom scroll animation
@@ -49,7 +49,7 @@ function TeamSection() {
           `}
           style={{}}
         >
-          <img src="../src//assets/zawar.jpg" alt="Ch Zawar Tahir" className="w-40 h-40 object-cover border-4 border-blue-300 mb-4 shadow" style={{clipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)', WebkitClipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)'}} />
+          <img src="/zawar.jpg" alt="Ch Zawar Tahir" className="w-40 h-40 object-cover border-4 border-blue-300 mb-4 shadow" style={{clipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)', WebkitClipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)'}} />
           <h3 className="text-xl font-bold text-primary mb-2">Ch Zawar Tahir</h3>
           <p className="text-gray-600 text-center">Lead Developer & Project Manager. Passionate about building scalable web apps and leading teams to success.</p>
         </div>
@@ -61,7 +61,7 @@ function TeamSection() {
           `}
           style={{}}
         >
-          <img src="../src//assets/usman.jpg" alt="Shalom John" className="w-40 h-40 object-cover border-4 border-green-300 mb-4 shadow" style={{clipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)', WebkitClipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)'}} />
+          <img src="/usman.jpg" alt="Shalom John" className="w-40 h-40 object-cover border-4 border-green-300 mb-4 shadow" style={{clipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)', WebkitClipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)'}} />
           <h3 className="text-xl font-bold text-green-700 mb-2">Usman Kashif</h3>
           <p className="text-gray-600 text-center">Frontend Specialist. Expert in React and UI/UX, ensuring a beautiful and user-friendly experience.</p>
         </div>
@@ -72,7 +72,7 @@ function TeamSection() {
           `}
           style={{}}
         >
-          <img src="../src//assets/ahsin.jpg" alt="Hafiz Ahsin" className="w-40 h-40 object-cover border-4 border-pink-300 mb-4 shadow" style={{clipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)', WebkitClipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)'}} />
+          <img src="/ahsin.jpg" alt="Hafiz Ahsin" className="w-40 h-40 object-cover border-4 border-pink-300 mb-4 shadow" style={{clipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)', WebkitClipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)'}} />
           <h3 className="text-xl font-bold text-pink-700 mb-2">Hafiz Ahsin Ali</h3>
           <p className="text-gray-600 text-center">Backend Specialist. Expert in Node.js and MongoDB, ensuring fast, secure, and scalable server-side performance.</p>
         </div>
@@ -159,7 +159,7 @@ function TeamSection() {
           <div className="w-full flex justify-center items-center mb-4 relative">
             <video 
               ref={videoRef}
-              src="../src/assets/video.mp4" 
+              src="/video.mp4" 
               autoPlay 
               loop 
               muted 
