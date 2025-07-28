@@ -21,8 +21,8 @@ import WanttoAdd from './pages/WanttoAdd'
 import Blog from './pages/blog'
 import BlogPostDetail from './pages/BlogPostDetail'
 
-axios.defaults.baseURL = 'http://localhost:4000/';
-axios.defaults.withCredentials=true;
+// axios.defaults.baseURL = 'http://localhost:4000/';
+// axios.defaults.withCredentials=true;
 
 function App() {
   return (

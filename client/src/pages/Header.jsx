@@ -63,7 +63,7 @@ export default function Header() {
         {/* Logo: leftmost on all screens */}
         <div className="flex-1 flex justify-start">
           <Link to={'/'} className="flex items-center">
-            <img src="../src/assets/Mehfil-unscreen.gif" alt="Logo" className="h-12 sm:h-9 w-auto object-contain" />
+            <img src="/Mehfil-unscreen.gif" alt="Logo" className="h-12 sm:h-9 w-auto object-contain" />
           </Link>
         </div>
         {/* Hamburger for mobile */}
