@@ -6,28 +6,18 @@ import axios from 'axios';
 export const UserContext = createContext({});
 
 export function UserContextProvider({children}){
-  const [user, setUser ] = useState(null);
+  const [user, setUser ] = useState(() => {
+    // Try to restore user from localStorage on first load
+    const localUser = localStorage.getItem('googleUser');
+    return localUser ? JSON.parse(localUser) : null;
+  });
+
   useEffect(() => {
-    if (!user) {
-      axios.get('/profile').then(({data}) =>{
-        if (data && data.email) {
-          setUser(data);
-        } else {
-          // Try to restore Google user from localStorage
-          const googleUser = localStorage.getItem('googleUser');
-          if (googleUser) {
-            setUser(JSON.parse(googleUser));
-          }
-        }
-      }).catch(() => {
-        // On error, try to restore Google user from localStorage
-        const googleUser = localStorage.getItem('googleUser');
-        if (googleUser) {
-          setUser(JSON.parse(googleUser));
-        }
-      });
+    // Always keep localStorage in sync with user state
+    if (user) {
+      localStorage.setItem('googleUser', JSON.stringify(user));
     }
-  },[user]);
+  }, [user]);
 
   // When logging out, clear Google user from localStorage
   const wrappedSetUser = (u) => {

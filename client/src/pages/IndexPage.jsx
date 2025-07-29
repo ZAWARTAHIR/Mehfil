@@ -14,11 +14,11 @@ import paduruImg from '/grand.jpg';
 // Team Section with custom scroll animation
 function TeamSection() {
   const teamRefs = useRef([]);
-  const [visible, setVisible] = useState([false, false]);
+  const [visible, setVisible] = useState([false, false, false]);
 
   useEffect(() => {
     const observers = [];
-    [0, 1].forEach(idx => {
+    [0, 1, 2].forEach(idx => {
       const el = teamRefs.current[idx];
       if (!el) return;
       const observer = new window.IntersectionObserver(
@@ -61,14 +61,15 @@ function TeamSection() {
           `}
           style={{}}
         >
-          <img src="/usman.jpg" alt="Shalom John" className="w-40 h-40 object-cover border-4 border-green-300 mb-4 shadow" style={{clipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)', WebkitClipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)'}} />
+          <img src="/usman.jpg" alt="Usman Kashif" className="w-40 h-40 object-cover border-4 border-green-300 mb-4 shadow" style={{clipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)', WebkitClipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)'}} />
           <h3 className="text-xl font-bold text-green-700 mb-2">Usman Kashif</h3>
           <p className="text-gray-600 text-center">Frontend Specialist. Expert in React and UI/UX, ensuring a beautiful and user-friendly experience.</p>
         </div>
+        {/* Card 3 */}
         <div
-          ref={el => (teamRefs.current[0] = el)}
+          ref={el => (teamRefs.current[2] = el)}
           className={`bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center hover:shadow-2xl border-t-4 border-pink-500 w-full sm:w-auto transition-all duration-700
-            ${visible[0] ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 -translate-x-16 scale-90'}
+            ${visible[2] ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 -translate-x-16 scale-90'}
           `}
           style={{}}
         >
@@ -84,6 +85,7 @@ function TeamSection() {
   export default function IndexPage() {
     const [events, setEvents] = useState([]);
     const [visibleCards, setVisibleCards] = useState({});
+    const [eventsToShow, setEventsToShow] = useState(6); // pagination state
     const cardRefs = useRef([]);
     const videoRef = useRef(null);
     const { user } = useContext(UserContext);
@@ -130,12 +132,15 @@ function TeamSection() {
 
     // Scroll reveal observer for all event cards (must be before return)
     useEffect(() => {
-      if (!events.length) return;
-      const observers = [];
-      events.forEach((event, idx) => {
+      // Use the same filteredEvents as in render
+      const currentDate = new Date();
+      const filteredEvents = events.filter(event => {
         const eventDate = new Date(event.eventDate);
-        const currentDate = new Date();
-        if (!(eventDate > currentDate || eventDate.toDateString() === currentDate.toDateString())) return;
+        return eventDate > currentDate || eventDate.toDateString() === currentDate.toDateString();
+      });
+      if (!filteredEvents.length) return;
+      const observers = [];
+      filteredEvents.forEach((event, idx) => {
         const el = cardRefs.current[idx];
         if (!el) return;
         const observer = new window.IntersectionObserver(
@@ -151,7 +156,7 @@ function TeamSection() {
         observers.push(observer);
       });
       return () => observers.forEach(obs => obs.disconnect());
-    }, [events]);
+    }, [events, eventsToShow]);
 
     return (
       <>
@@ -250,10 +255,16 @@ function TeamSection() {
               {/* Vertical scroll reveal for events */}
               <div className="w-full py-2">
                 <div className="flex flex-wrap justify-center gap-x-6 gap-y-8 px-2 md:px-4 lg:px-8">
-                  {events.length > 0 && events.map((event, idx) => {
-                    const eventDate = new Date(event.eventDate);
+                  {(() => {
+                    // Filter and sort events for display
                     const currentDate = new Date();
-                    if (eventDate > currentDate || eventDate.toDateString() === currentDate.toDateString()) {
+                    const filteredEvents = events.filter(event => {
+                      const eventDate = new Date(event.eventDate);
+                      return eventDate > currentDate || eventDate.toDateString() === currentDate.toDateString();
+                    });
+                    return filteredEvents.slice(0, eventsToShow).map((event) => {
+                      // Find the index in the full filteredEvents array for refs/animation
+                      const idx = filteredEvents.findIndex(e => e._id === event._id);
                       return (
                         <div
                           ref={el => cardRefs.current[idx] = el}
@@ -295,9 +306,41 @@ function TeamSection() {
                           </div>
                         </div>
                       );
+                    });
+                  })()}
+                  {/* Show More button */}
+                  {(() => {
+                    const currentDate = new Date();
+                    const filteredEvents = events.filter(event => {
+                      const eventDate = new Date(event.eventDate);
+                      return eventDate > currentDate || eventDate.toDateString() === currentDate.toDateString();
+                    });
+                    const canShowMore = eventsToShow < filteredEvents.length;
+                    const canShowLess = eventsToShow > 6;
+                    if (canShowMore || canShowLess) {
+                      return (
+                        <div className="w-full flex justify-center mt-4 gap-4">
+                          {canShowMore && (
+                            <button
+                              className="primary px-8 py-2 rounded-full shadow-md bg-blue-600 text-white hover:bg-blue-700 transition-all"
+                              onClick={() => setEventsToShow(prev => prev + 3)}
+                            >
+                              Show More
+                            </button>
+                          )}
+                          {canShowLess && (
+                            <button
+                              className="primary px-8 py-2 rounded-full shadow-md bg-gray-400 text-white hover:bg-gray-600 transition-all"
+                              onClick={() => setEventsToShow(6)}
+                            >
+                              Show Less
+                            </button>
+                          )}
+                        </div>
+                      );
                     }
                     return null;
-                  })}
+                  })()}
                 </div>
               </div>
           </div>

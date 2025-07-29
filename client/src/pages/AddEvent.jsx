@@ -1,9 +1,18 @@
-import  { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import axios from 'axios';
 import { UserContext } from '../UserContext';
 
 export default function AddEvent() {
   const {user} = useContext(UserContext);
+  if (!user || user.email !== "admin@admin.com") {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
+        <h1 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h1>
+        <p className="text-lg text-gray-700">Only admin can access this page.</p>
+      </div>
+    );
+  }
+
   const [formData, setFormData] = useState({
     owner: user? user.name : "",
     title: "",

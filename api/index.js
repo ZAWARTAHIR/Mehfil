@@ -8,7 +8,6 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const multer = require("multer");
 const path = require("path");
-const serverless = require("serverless-http"); // Add this line
 
 const Ticket = require("./models/Ticket");
 
@@ -32,6 +31,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/EventoEMS', {
 })
 .then(() => console.log("✅ Connected to MongoDB"))
 .catch((err) => console.error("❌ MongoDB connection error:", err));
+
 
 const storage = multer.diskStorage({
    destination: (req, file, cb) => {
@@ -263,8 +263,7 @@ app.delete("/tickets/:id", async (req, res) => {
    }
 });
 
-// Remove app.listen - Vercel serverless doesn't use it
-
-// Export the Express app wrapped with serverless-http
-module.exports = app;
-module.exports.handler = serverless(app);
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+   console.log(`Server is running on port ${PORT}`);
+});

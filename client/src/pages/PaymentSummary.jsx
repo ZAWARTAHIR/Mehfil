@@ -183,9 +183,9 @@ if (redirect){
             <h2 className="text-xl font-bold mb-4">Payment Info</h2>
             <div className="flex flex-col gap-2">
               <span className="font-semibold">Credit / Debit Card</span>
-              <span className="text-sm text-gray-700">Name on Card: <b>Ucp</b></span>
+              <span className="text-sm text-gray-700">Name on Card: <b>Zawar Tahir</b></span>
               <span className="text-sm text-gray-700">Card Number: <b>5648 3212 7802</b></span>
-              <span className="text-sm text-gray-700">Expiry Date: <b>12/25</b></span>
+              <span className="text-sm text-gray-700">Expiry Date: <b>12/28</b></span>
               <span className="text-sm text-gray-700">CVV: <b>532</b></span>
             </div>
           </div>
@@ -223,6 +223,13 @@ if (redirect){
                 Female
               </label>
             </div>
+            {/* Gender-based warning for male */}
+            {details.gender === 'male' && (
+              <div className="mb-2 p-3 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 rounded flex items-center gap-2 shadow animate-pulse">
+                <svg className="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" /></svg>
+                <span className="font-semibold">Note: Male can use only one ticket. If you buy more than one ticket, payment will not be refunded.</span>
+              </div>
+            )}
             {showFieldError && (
               <div className="mb-2 p-3 bg-red-100 border-l-4 border-red-500 text-red-800 rounded flex items-center gap-2 shadow animate-pulse">
                 <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>

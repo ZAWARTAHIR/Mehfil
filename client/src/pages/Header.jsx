@@ -99,6 +99,20 @@ export default function Header() {
                 <div className='font-bold color-primary text-sm'>Add Event</div>
               </div>
             </Link>
+            {/* Create Event button for all logged-in users */}
+            {!!user && (
+              <Link to={'/createevent'}>
+                <div className='flex flex-col place-items-center py-1 px-2 rounded text-primary cursor-pointer hover:text-primarydark hover:bg-white hover:shadow-sm shadow-gray-200 hover:transition-shadow duration-1500'>
+                  <button>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 stroke-3 py-1">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 2h8v4H8z" />
+                    </svg>
+                  </button>
+                  <div className='font-bold color-primary text-sm'>Create Event</div>
+                </div>
+              </Link>
+            )}
             <Link to={'/wallet'}>
               <div className='flex flex-col place-items-center py-1 px-3 rounded cursor-pointer hover:text-primarydark hover:bg-white hover:shadow-sm shadow-gray-200 hover:transition-shadow duration-1500'>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 py-1">
@@ -194,7 +208,7 @@ export default function Header() {
                   <button onClick={logout} className="text-left hover:text-primary transition-colors">Log out</button>
                 </>
               ) : (
-                <Link to="/login" onClick={() => setisMenuOpen(false)} className="hover:text-primary transition-colors">Sign in</Link>
+                <Link to="/login" onClick={() => setisMenuOpen(false)} className="hover:text-primary transition-colors">Sign out</Link>
               )}
             </nav>
           </div>

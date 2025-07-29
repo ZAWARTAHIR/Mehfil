@@ -3,24 +3,25 @@ import axios from "axios";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, addMonths } from "date-fns";
 import { useEffect, useState, useContext } from "react";
 import { BsCaretLeftFill, BsFillCaretRightFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { UserContext } from "../UserContext"; // Adjust the import based on your project structure
 
 
 export default function CalendarView() {
+  const location = useLocation();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [events, setEvents] = useState([]);
   const { user } = useContext(UserContext); // Use UserContext
   
 //! Fetch events from the server -------------------------------------------------------
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_BACKEND_URL}/event`).then((response) => {
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/createEvent`).then((response) => {
       setEvents(response.data);
     }).catch((error) => {
       console.error("Error fetching events:", error);
       setEvents([]);
     });
-  }, [user, currentMonth]); // Depend on both user and currentMonth
+  }, [user, currentMonth, location]); // Depend on user, currentMonth, and location
 
   const firstDayOfMonth = startOfMonth(currentMonth);
   const lastDayOfMonth = endOfMonth(currentMonth);
